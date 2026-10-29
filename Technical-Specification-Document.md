@@ -375,7 +375,7 @@ Wireframes are available in the
 
 ### Appendix B: Document URLs
 
-- ERD: <https://miro.com/app/board/uXjVEXqMZpo=/>
+- ERD: <https://miro.com/app/board/uXjVEXqMZpo=/?share_link_id=781465719001>
 
 - Wireframe: <https://stitch.withgoogle.com/projects/8741238950472922734>
 
