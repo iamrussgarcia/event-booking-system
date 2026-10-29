@@ -105,7 +105,11 @@
 
 ## 5. Visual Mockup Reference
 
+<<<<<<< HEAD
 Wireframes come from `03_Wireframe_Stitch.md`.
+=======
+# Wireframes come from `03_Wireframe_Stitch.md`.
+>>>>>>> a2695e128ca8db0ee5dc3e4509f1e760018bd609
 
 | Client reference                              | Client's request                                                 | How this spec covers it                                                                                                               |
 | --------------------------------------------- | ---------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
@@ -114,7 +118,7 @@ Wireframes come from `03_Wireframe_Stitch.md`.
 | #5 Event Details                              | A complete page per event                                        | **F-04**: tabs for Details, FAQ, Exchange & Refund Policy, Ways to Buy; **F-05** seat plan on the same page                           |
 | #6 Customer Profile                           | Manage personal information in one place                         | **F-07** My Tickets (Must), **F-08** profile (Should)                                                                                 |
 | #6–#8 VIP Guide, Meet & Greet, Special Access | Dedicated VIP page; ideas left to the team                       | **Our idea:** VIP is a **zone on the seat plan** with perks (F-11), shown in the legend (Must) and on an optional **VIP page** (F-09) |
-| StubHub references                            | Mobile-friendly discovery                                        | Mobile-first layout (section 8)                                                                                                       |
+| StubHub references                            | Mobile-friendly discovery                                        | Mobile-first layout (section 8)                                                                                                       |                                                                                                |
 
 ## 6. Features
 
@@ -155,7 +159,11 @@ Wireframes come from `03_Wireframe_Stitch.md`.
 
 ### 6.3 Basic Admin (F-10, F-11, F-12) and What Is Left Out
 
+<<<<<<< HEAD
 Admin pages need the admin role; others get a 403 page.
+=======
+# Admin pages need the admin role; others get a 403 page.
+>>>>>>> a2695e128ca8db0ee5dc3e4509f1e760018bd609
 
 | Area                            | What the admin can do                                                                                                                                                                                                  |
 | ------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -297,7 +305,11 @@ Admin pages need the admin role; others get a 403 page.
 
 ## 10. External Interface Requirements
 
+<<<<<<< HEAD
 **User Interfaces** (EJS pages with Bootstrap 5):
+=======
+# - **User Interfaces** (EJS pages with Bootstrap 5):
+>>>>>>> a2695e128ca8db0ee5dc3e4509f1e760018bd609
 
 | Page                          | Path                                                                                      | Who                                      |
 | ----------------------------- | ----------------------------------------------------------------------------------------- | ---------------------------------------- |
@@ -350,9 +362,13 @@ Admin pages need the admin role; others get a 403 page.
 
 * **Productivity:** 70% of each day is coding time, so each person gives **7 person-days**.
 
+<<<<<<< HEAD
 * Estimates are working guesses for a bootcamp-level team, not guarantees.
 
 #### A.2 Work breakdown (person-days)
+=======
+* Estimates are working guesses for a bootcamp-level team, not guarantees.**A.2 Work breakdown (person-days)**
+>>>>>>> a2695e128ca8db0ee5dc3e4509f1e760018bd609
 
 | Group      | Work items                                                                                                                                                                    | Days     |
 | ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
@@ -365,8 +381,12 @@ Admin pages need the admin role; others get a 403 page.
 | Should     | Profile 0.5 · VIP page 0.5 · Confirmation email 1.0 · Seat plan polish 1.5                                                                                                    | 3.5      |
 |            | **Must + Should**                                                                                                                                                             | **28.0** |
 
+<<<<<<< HEAD
 #### A.3 Day plan and checkpoints
 
+=======
+**A.4 Day plan and checkpoints**
+>>>>>>> a2695e128ca8db0ee5dc3e4509f1e760018bd609
 | Days | Dates     | Focus                                                                                                                                                                     |
 | ---- | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | 1–2  | Nov 3–4   | Skeleton, theme, auth, seed with sample venue; **start the seat plan on day 1** (riskiest part)                                                                           |
