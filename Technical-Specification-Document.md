@@ -66,11 +66,9 @@
   - **SVG**: vector graphics format used to draw the seat plan
 
 - **References**:
-  - Client briefing "Visual Mockup for an Event Booking System" (`compiled.zip`)
+  - Client briefing "Visual Mockup for an Event Booking System"
 
   - Reference sites named by the client: Ticketmaster, Live Nation PH, StubHub (inspiration only, not to be copied)
-
-  - Companion documents: `02_ERD_NoSQL.md`, `03_Wireframe_Stitch.md`
 
 ## 4. Overall Description
 
@@ -105,7 +103,7 @@
 
 ## 5. Visual Mockup Reference
 
-Wireframes are documented in `03_Wireframe_Stitch.md` and are available in the
+Wireframes are available in the
 [Google Stitch mockup](https://stitch.withgoogle.com/projects/8741238950472922734).
 
 | Client reference                              | Client's request                                                 | How this spec covers it                                                                                                               |
