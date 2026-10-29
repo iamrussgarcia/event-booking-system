@@ -105,16 +105,17 @@
 
 ## 5. Visual Mockup Reference
 
-# Wireframes come from `03_Wireframe_Stitch.md`.
+Wireframes are documented in `03_Wireframe_Stitch.md` and are available in the
+[Google Stitch mockup](https://stitch.withgoogle.com/projects/8741238950472922734).
 
 | Client reference                              | Client's request                                                 | How this spec covers it                                                                                                               |
-| --------------------------------------------- | ---------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- | --- |
+| --------------------------------------------- | ---------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
 | #1 Homepage, #4 Featured Events               | Highlight upcoming events and featured artists                   | **F-02**: carousel of featured events (set by admin in F-10), find-events bar, upcoming grid                                          |
 | #2 Event Listings, #3 Event Calendar          | Easy to browse; find events without scrolling through everything | **F-03**: one Events page, grouped by month, with search and filters (the two references were nearly the same screen)                 |
 | #5 Event Details                              | A complete page per event                                        | **F-04**: tabs for Details, FAQ, Exchange & Refund Policy, Ways to Buy; **F-05** seat plan on the same page                           |
 | #6 Customer Profile                           | Manage personal information in one place                         | **F-07** My Tickets (Must), **F-08** profile (Should)                                                                                 |
 | #6–#8 VIP Guide, Meet & Greet, Special Access | Dedicated VIP page; ideas left to the team                       | **Our idea:** VIP is a **zone on the seat plan** with perks (F-11), shown in the legend (Must) and on an optional **VIP page** (F-09) |
-| StubHub references                            | Mobile-friendly discovery                                        | Mobile-first layout (section 8)                                                                                                       |     |
+| StubHub references                            | Mobile-friendly discovery                                        | Mobile-first layout (section 8)                                                                                                       |
 
 ## 6. Features
 
