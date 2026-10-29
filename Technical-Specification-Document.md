@@ -111,7 +111,7 @@
 # Wireframes come from `03_Wireframe_Stitch.md`.
 
 | Client reference                              | Client's request                                                 | How this spec covers it                                                                                                               |
-| --- | --- | --- |
+| --------------------------------------------- | ---------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
 | #1 Homepage, #4 Featured Events               | Highlight upcoming events and featured artists                   | **F-02**: carousel of featured events (set by admin in F-10), find-events bar, upcoming grid                                          |
 | #2 Event Listings, #3 Event Calendar          | Easy to browse; find events without scrolling through everything | **F-03**: one Events page, grouped by month, with search and filters (the two references were nearly the same screen)                 |
 | #5 Event Details                              | A complete page per event                                        | **F-04**: tabs for Details, FAQ, Exchange & Refund Policy, Ways to Buy; **F-05** seat plan on the same page                           |
@@ -123,7 +123,7 @@
 
 ### 6.1 Feature List
 
-# | ID   | Feature                         | Description                                                                                    | Priority |
+| ID   | Feature                         | Description                                                                                    | Priority |
 | ---- | ------------------------------- | ---------------------------------------------------------------------------------------------- | -------- |
 | F-01 | Registration and Login          | Email and password accounts                                                                    | Must     |
 | F-02 | Homepage                        | Featured carousel, find-events bar, upcoming grid                                              | Must     |
@@ -158,7 +158,9 @@
 
 ### 6.3 Basic Admin (F-10, F-11, F-12) and What Is Left Out
 
-# Admin pages need the admin role; others get a 403 page.| Area                            | What the admin can do                                                                                                                                                                                                  |
+# Admin pages need the admin role; others get a 403 page.
+
+| Area                            | What the admin can do                                                                                                                                                                                                  |
 | ------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Events (F-10)                   | Search and filter the list; create; edit title, artist, genre, date and time, venue (from the seeded venues), image, description, FAQ, refund policy, ways to buy; set **featured**; publish; unpublish; delete drafts |
 | Zones, prices, VIP perks (F-11) | Pick a zone per section (dropdown); per zone set name, color, price, **VIP** checkbox, and **perks** (one per line); read-only seat-plan preview. Publishing creates one availability record per seat                  |
@@ -216,7 +218,7 @@
 
 ### System Features (processing and error handling)
 
-# | Feature                              | Processing                                                                                                           | Error handling                                                                                |
+| Feature                              | Processing                                                                                                           | Error handling                                                                                |
 | ------------------------------------ | -------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
 | Registration and Login (F-01)        | Validate; hash password; start a session (httpOnly cookie)                                                           | Invalid input, duplicate email, wrong credentials                                             |
 | Browse and Event Details (F-02–F-04) | Indexed queries on published, upcoming events                                                                        | Empty-state message; 404                                                                      |
@@ -278,7 +280,9 @@
 
 ## 10. External Interface Requirements
 
-# - **User Interfaces** (EJS pages with Bootstrap 5):| Page                          | Path                                                                                      | Who                                      |
+# - **User Interfaces** (EJS pages with Bootstrap 5):
+
+| Page                          | Path                                                                                      | Who                                      |
 | ----------------------------- | ----------------------------------------------------------------------------------------- | ---------------------------------------- |
 | Homepage, Events list         | `/`, `/events`                                                                            | Everyone                                 |
 | Event details with seat plan  | `/events/:slug`                                                                           | Everyone (login to continue to checkout) |
@@ -326,7 +330,9 @@
 
 * **Productivity:** 70% of each day is coding time, so each person gives **7 person-days**.
 
-* Estimates are working guesses for a bootcamp-level team, not guarantees.**A.2 Work breakdown (person-days)**| Group      | Work items                                                                                                                                                                    | Days     |
+* Estimates are working guesses for a bootcamp-level team, not guarantees.**A.2 Work breakdown (person-days)**
+
+| Group      | Work items                                                                                                                                                                    | Days     |
 | ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- |
 | Foundation | Skeleton, models, layout, theme, sessions (1.5); registration, login, role guard (1.0); seed with seat-layout generator and per-seat records (1.5)                            | 4.0      |
 | Customer   | Homepage (1.0); events page (1.5); event details (1.0); seat plan (3.0); hold, release, countdown (1.5); checkout, payment, callback (2.5); confirmation and My Tickets (1.0) | 11.5     |
