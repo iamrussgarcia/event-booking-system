@@ -341,7 +341,10 @@
 | Launch     | Deploy, environment variables, production seed                                                                                                                                | 1.0      |
 |            | **Must total**                                                                                                                                                                | **24.5** |
 | Should     | Profile 0.5 · VIP page 0.5 · Confirmation email 1.0 · Seat plan polish 1.5                                                                                                    | 3.5      |
-|            | **Must + Should**                                                                                                                                                             | **28.0** |**A.4 Day plan and checkpoints**| Days | Dates     | Focus                                                                                                                                                                     |
+|            | **Must + Should**                                                                                                                                                             | **28.0** |
+
+**A.4 Day plan and checkpoints**
+| Days | Dates     | Focus                                                                                                                                                                     |
 | ---- | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | 1–2  | Nov 3–4   | Skeleton, theme, auth, seed with sample venue; **start the seat plan on day 1** (riskiest part)                                                                           |
 | 3–4  | Nov 5–6   | Browse pages, event details, seat status API, seat selection, hold API, admin shell. **Checkpoint 1 (Fri Nov 6):** browse, open an event, select seats; admin login works |
