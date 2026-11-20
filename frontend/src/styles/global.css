@@ -1,0 +1,125 @@
+:root {
+  /* Surfaces (from Figma) */
+  --bg: #11131c;
+  --surface-lowest: #0c0e17;
+  --surface-low: #191b24;
+  --surface: #1d1f29;
+  --outline-variant: #494454;
+
+  /* Text */
+  --text: #e1e1ef;
+  --text-muted: #cbc3d7;
+  --text-subtle: #958ea0;
+
+  /* Brand */
+  --primary: #d0bcff;
+  --primary-strong: #a078ff;
+  --on-primary: #340080;
+  --secondary: #4cd7f6;
+  --gold: #ffb95f;
+  --on-gold: #472a00;
+  --danger: #ffb4ab;
+  --danger-bg: rgba(147, 0, 10, 0.4);
+
+  --font-body: 'Inter', system-ui, sans-serif;
+  --font-display: 'Syne', 'Inter', sans-serif;
+
+  --radius-sm: 4px;
+  --radius: 12px;
+  --radius-lg: 16px;
+  --radius-pill: 9999px;
+  --container: 1280px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-size-adjust: 100%;
+}
+
+/* Safety net: never let one stray element create sideways page scroll. */
+body {
+  overflow-x: clip;
+}
+
+input,
+select,
+textarea {
+  min-width: 0;
+  max-width: 100%;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  border: 0;
+  background: none;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+
+.container {
+  width: 100%;
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: var(--radius-pill);
+  font-weight: 600;
+  font-size: 14px;
+  padding: 10px 20px;
+  transition: filter 0.15s;
+}
+.btn:hover {
+  filter: brightness(1.1);
+}
+.btn-primary {
+  background: var(--primary-strong);
+  color: var(--on-primary);
+}
+.btn-gold {
+  background: var(--gold);
+  color: var(--on-gold);
+}
+
+/* Phones: tighter gutters, and tap targets that are easy to hit. */
+@media (max-width: 600px) {
+  .container {
+    padding: 0 16px;
+  }
+  .btn {
+    min-height: 44px;
+    justify-content: center;
+  }
+}
