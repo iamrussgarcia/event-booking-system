@@ -1,47 +1,72 @@
-import { reactive } from 'vue'
-const KEY = 'spotlight.user'
-const read = () => {
+import axios from "axios";
+import { reactive } from "vue";
+
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:4000";
+const TOKEN_KEY = "spotlight_token";
+
+const api = axios.create({
+  baseURL: API_URL,
+  withCredentials: true,
+});
+
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem(TOKEN_KEY);
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
+export const auth = reactive({
+  user: null,
+  loaded: false,
+});
+
+export async function register(payload) {
+  const { data } = await api.post("/users/register", payload);
+  if (data.access) localStorage.setItem(TOKEN_KEY, data.access);
+  auth.user = data.user;
+  auth.loaded = true;
+  return data.user;
+}
+
+export async function signIn(payload) {
+  const { data } = await api.post("/users/login", payload);
+  if (data.access) localStorage.setItem(TOKEN_KEY, data.access);
+  auth.user = data.user;
+  auth.loaded = true;
+  return data.user;
+}
+
+export async function signOut() {
   try {
-    return JSON.parse(localStorage.getItem(KEY) ?? 'null')
-  } catch {
-    return null
+    await api.post("/users/logout");
+  } finally {
+    localStorage.removeItem(TOKEN_KEY);
+    auth.user = null;
+    auth.loaded = true;
   }
 }
-export const auth = reactive({ user: read() })
-const save = () => {
+
+export async function fetchProfile() {
   try {
-    if (auth.user) localStorage.setItem(KEY, JSON.stringify(auth.user))
-    else localStorage.removeItem(KEY)
-  } catch {
-    /* storage unavailable: session lasts until reload */
+    const { data } = await api.get("/users/profile");
+    auth.user = data.user;
+    auth.loaded = true;
+    return data.user;
+  } catch (err) {
+    auth.user = null;
+    auth.loaded = true;
+    throw err;
   }
 }
-// Front-end only: no password is stored or verified until the Express API exists.
-// Any email containing "admin" signs in as the admin role so the admin screens can be previewed.
-export function signIn(email) {
-  const name = email.split('@')[0].replace(/[._]/g, ' ')
-  const [first, ...rest] = name.split(' ')
-  const cap = (s) => s.charAt(0).toUpperCase() + s.slice(1)
-  auth.user = {
-    firstName: cap(first || 'Guest'),
-    lastName: cap(rest.join(' ') || 'User'),
-    email,
-    phone: '',
-    role: email.toLowerCase().includes('admin') ? 'admin' : 'customer',
-  }
-  save()
+
+export async function updateProfile(payload) {
+  const { data } = await api.patch("/users/profile", payload);
+  auth.user = data.user;
+  return data.user;
 }
-export function register(u) {
-  auth.user = { ...u, role: u.email.toLowerCase().includes('admin') ? 'admin' : 'customer' }
-  save()
-}
-export function updateProfile(patch) {
-  if (auth.user) {
-    Object.assign(auth.user, patch)
-    save()
-  }
-}
-export function signOut() {
-  auth.user = null
-  save()
+
+export async function changePassword(payload) {
+  await api.patch("/users/password", payload);
 }

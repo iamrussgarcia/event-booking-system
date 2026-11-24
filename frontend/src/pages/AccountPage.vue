@@ -1,46 +1,118 @@
 <script setup>
 import AppIcon from '../components/AppIcon.vue'
-import { computed, reactive, ref } from 'vue'
+import { computed, reactive, ref, watch } from 'vue'
 import { RouterLink, useRouter } from 'vue-router'
-import { auth, signOut, updateProfile } from '../stores/auth'
+import { auth, changePassword, signOut, updateProfile } from '../stores/auth'
 import { booking } from '../stores/booking'
+
 const router = useRouter()
 const user = computed(() => auth.user)
+
 const form = reactive({
   first: user.value?.firstName ?? 'Beatriz',
   last: user.value?.lastName ?? 'Alonzo',
   phone: user.value?.phone ?? '917 882 4491',
 })
+
+watch(
+  user,
+  (u) => {
+    if (!u) return
+    if (u.firstName !== undefined) form.first = u.firstName
+    if (u.lastName !== undefined) form.last = u.lastName
+    if (u.phone !== undefined) form.phone = u.phone
+  },
+  { immediate: true }
+)
+
 const email = computed(() => user.value?.email ?? 'beatriz.alonzo@gmail.com')
+const initials = computed(() => {
+  const a = (form.first || '').trim()[0] || ''
+  const b = (form.last || '').trim()[0] || ''
+  return (a + b).toUpperCase() || 'BA'
+})
+
 const saved = ref(false)
 const err = reactive({})
 const pw = reactive({ current: '', next: '', confirm: '' })
 const pwShow = ref(false)
 const pwMsg = ref('')
+const pwSuccess = ref(false)
+
 const len = computed(() => pw.next.length >= 8)
-const sym = computed(() => /[\d\W]/.test(pw.next))
-const passes = computed(() => (booking.orders.length ? booking.orders.reduce((n, o) => n + o.tickets.length, 0) : 2))
-const save = () => {
+const sym = computed(() => /[0-9\W]/.test(pw.next))
+const passes = computed(() =>
+  booking.orders.length ? booking.orders.reduce((n, o) => n + o.tickets.length, 0) : 2
+)
+
+const save = async () => {
   Object.keys(err).forEach((k) => delete err[k])
+  saved.value = false
   if (!form.first.trim()) err.first = 'First name is required.'
   if (!form.last.trim()) err.last = 'Last name is required.'
   if (!/^\d[\d\s]{8,12}$/.test(form.phone.trim())) err.phone = 'Enter a valid mobile number.'
   if (Object.keys(err).length) return
-  updateProfile({ firstName: form.first, lastName: form.last, phone: form.phone })
-  saved.value = true
-}
-const changePw = () => {
-  pwMsg.value = ''
-  if (!pw.current) pwMsg.value = 'Enter your current password.'
-  else if (!len.value || !sym.value) pwMsg.value = 'New password does not meet the criteria.'
-  else if (pw.next !== pw.confirm) pwMsg.value = 'Passwords do not match.'
-  else {
-    pwMsg.value = 'Password updated (front-end preview only).'
-    pw.current = pw.next = pw.confirm = ''
+
+  try {
+    await updateProfile({
+      firstName: form.first.trim(),
+      lastName: form.last.trim(),
+      phone: form.phone.trim(),
+    })
+    saved.value = true
+  } catch (e) {
+    const serverErrors = e?.response?.data?.errors
+    if (serverErrors) {
+      if (serverErrors.firstName) err.first = serverErrors.firstName
+      if (serverErrors.lastName) err.last = serverErrors.lastName
+      if (serverErrors.phone) err.phone = serverErrors.phone
+    } else {
+      err.phone = e?.response?.data?.message || e?.message || 'Could not update profile.'
+    }
   }
 }
-const out = () => {
-  signOut()
+
+const changePw = async () => {
+  pwMsg.value = ''
+  pwSuccess.value = false
+
+  if (!pw.current) {
+    pwMsg.value = 'Enter your current password.'
+    return
+  }
+  if (!len.value || !sym.value) {
+    pwMsg.value = 'New password does not meet the criteria.'
+    return
+  }
+  if (pw.next !== pw.confirm) {
+    pwMsg.value = 'Passwords do not match.'
+    return
+  }
+
+  try {
+    await changePassword({
+      currentPassword: pw.current,
+      newPassword: pw.next,
+    })
+    pwSuccess.value = true
+    pwMsg.value = 'Password updated successfully.'
+    pw.current = ''
+    pw.next = ''
+    pw.confirm = ''
+  } catch (e) {
+    const data = e?.response?.data || e
+    const serverErrors = data?.errors
+    pwMsg.value =
+      serverErrors?.currentPassword ||
+      serverErrors?.newPassword ||
+      data?.message ||
+      e?.message ||
+      'Could not update password.'
+  }
+}
+
+const out = async () => {
+  await signOut()
   router.push('/')
 }
 </script>
@@ -50,7 +122,7 @@ const out = () => {
     <nav class="crumbs"><RouterLink to="/">Home</RouterLink> / <RouterLink to="/account/tickets">Account</RouterLink> / <b>Profile Settings</b></nav>
 
     <section class="profile">
-      <div class="av">{{ form.first[0] }}{{ form.last[0] }}</div>
+      <div class="av">{{ initials }}</div>
       <div>
         <h1>{{ form.first }} {{ form.last }} <em><AppIcon name="star" filled /> Spotlight VIP Fan</em><em class="g">Member since 2024</em></h1>
         <p><AppIcon name="circle" filled size="8" /> {{ passes }} Active Digital Passes on Metro Manila Nodes • SEC-ID: #MNL-88241</p>
@@ -95,7 +167,7 @@ const out = () => {
             <label>Confirm New Password<span class="in"><input v-model="pw.confirm" :type="pwShow ? 'text' : 'password'" placeholder="Re-type new password" autocomplete="new-password" /><button type="button" :aria-label="pwShow ? 'Hide passwords' : 'Show passwords'" @click="pwShow = !pwShow"><AppIcon :name="pwShow ? 'eye-off' : 'eye'" /></button></span></label>
           </div>
           <div class="crit"><b>SECURITY CRITERIA:</b><span :class="{ y: len }"><AppIcon :name="len ? 'check' : 'circle'" /> At least 8 characters length</span><span :class="{ y: sym }"><AppIcon :name="sym ? 'check' : 'circle'" /> Include at least one number or symbol</span></div>
-          <div class="fr"><small :class="{ e: pwMsg && !pwMsg.startsWith('Password updated') }">{{ pwMsg || 'You will be required to authenticate via SMS 2FA code.' }}</small><button class="btn alt" type="submit"><AppIcon name="key-round" /> Update Password</button></div>
+          <div class="fr"><small :class="{ e: pwMsg && !pwSuccess, s: pwSuccess }">{{ pwMsg || 'You will be required to authenticate via SMS 2FA code.' }}</small><button class="btn alt" type="submit"><AppIcon name="key-round" /> Update Password</button></div>
         </form>
 
         <div class="next"><span class="th"><AppIcon name="mic" /></span><div><small>NEXT LIVE EVENT <AppIcon name="circle" filled size="8" /></small><b>Aria Vale: City Lights Tour</b><p>Sat, Feb 14, 2027 • Bayview Arena • <em>{{ passes }} Floor Seats Reserved</em></p></div><RouterLink to="/account/tickets" class="btn tix">View Tickets &amp; QR Codes <AppIcon name="arrow-right" /></RouterLink></div>
@@ -141,11 +213,26 @@ h2 { font-family: var(--font-display); font-size: 20px; }
 .h p { font-size: 12px; color: var(--text-subtle); }
 .kyc { padding: 3px 10px; border-radius: var(--radius-sm); background: rgba(76,215,246,.15); color: var(--secondary); font-size: 10px; font-style: normal; font-weight: 600; }
 .kyc.grey { background: var(--surface); color: var(--text-muted); }
-.two { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-label { display: flex; flex-direction: column; gap: 6px; font-size: 12px; font-weight: 600; }
-input { padding: 14px 16px; border-radius: var(--radius); border: 1px solid transparent; background: var(--surface-lowest); color: var(--text); font: inherit; font-size: 14px; font-weight: 400; outline: 0; }
-.in { display: flex; align-items: center; gap: 10px; padding: 0 16px 0 0; border-radius: var(--radius); background: var(--surface-lowest); border: 1px solid transparent; }
-.in input { flex: 1; background: none; }
+.two { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; }
+label { display: flex; flex-direction: column; gap: 6px; min-width: 0; font-size: 12px; font-weight: 600; }
+input { width: 100%; min-width: 0; box-sizing: border-box; padding: 14px 16px; border-radius: var(--radius); border: 1px solid transparent; background: var(--surface-lowest, #14151f); color: var(--text, #f4f4f8); font: inherit; font-size: 14px; font-weight: 400; outline: 0; }
+input:autofill,
+input:autofill:hover,
+input:autofill:focus,
+input:autofill:active,
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  background-color: var(--surface-lowest, #14151f) !important;
+  color: var(--text, #f4f4f8) !important;
+  -webkit-box-shadow: 0 0 0 1000px var(--surface-lowest, #14151f) inset !important;
+  -webkit-text-fill-color: var(--text, #f4f4f8) !important;
+  caret-color: var(--text, #f4f4f8);
+  transition: background-color 9999s ease-in-out 0s;
+}
+.in { display: flex; align-items: center; gap: 10px; min-width: 0; padding: 0 16px 0 0; border-radius: var(--radius); background: var(--surface-lowest, #14151f); border: 1px solid transparent; }
+.in input { flex: 1; border-radius: 0; background: transparent; }
 .in b { padding: 14px 12px; background: #20222c; border-radius: var(--radius) 0 0 var(--radius); font-size: 12px; font-weight: 500; }
 .in button { color: var(--text-subtle); }
 .in.lock input { color: var(--text-subtle); }
@@ -153,6 +240,7 @@ input:focus, .in:focus-within { border-color: var(--primary-strong); }
 input[aria-invalid='true'] { border-color: var(--danger); }
 small { font-size: 12px; color: var(--text-subtle); font-weight: 400; }
 small.e, label small { color: var(--danger); }
+small.s { color: #86efac; }
 .info { padding: 14px 16px; border-radius: var(--radius); background: var(--surface-lowest); font-size: 12px; line-height: 1.5; color: var(--text-muted); }
 .info b { color: var(--primary); }
 .fr { display: flex; justify-content: space-between; align-items: center; gap: 16px; }
